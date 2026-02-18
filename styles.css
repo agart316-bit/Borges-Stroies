@@ -560,52 +560,29 @@ html {
     appearance: none;
 }
 
-.close-card .close-line {
+.close-card::before,
+.close-card::after {
+    content: "";
     position: absolute;
     left: 8px;
     top: 50%;
     width: 28px;
     height: 4px;
-    background-color: #c8c8c8;
+    background-color: #666;
+    transition: background-color 0.15s ease;
 }
 
-.close-card .close-line::after {
-    content: "";
-    background-color: #111;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    transition: all 0.15s;
-}
-
-.close-card .close-line-a {
+.close-card::before {
     transform: translateY(-50%) rotate(45deg);
 }
 
-.close-card .close-line-a::after {
-    left: 100%;
-    right: 0;
-    transition-delay: 0s;
-}
-
-.close-card .close-line-b {
+.close-card::after {
     transform: translateY(-50%) rotate(-45deg);
 }
 
-.close-card .close-line-b::after {
-    left: 0;
-    right: 100%;
-    transition-delay: 0.15s;
-}
-
-.close-card:hover .close-line-a::after {
-    left: 0;
-    transition-delay: 0.15s;
-}
-
-.close-card:hover .close-line-b::after {
-    right: 0;
-    transition-delay: 0s;
+.close-card:hover::before,
+.close-card:hover::after {
+    background-color: #111;
 }
 
 .close-card:active {
