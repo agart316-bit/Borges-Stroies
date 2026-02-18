@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Garden of Forking Paths</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=IM+Fell+English:ital@0;1&family=Special+Elite&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+</head>
+
+<body class="story-page" data-suit="diamonds">
+    <img src="./assets/diamonds-background.png" alt="Diamonds Background" class="background-image">
+    <div class="back-button-container">
+        <a href="index.html" class="back-button">Want to choose again?</a>
+    </div>
+
+    <button id="skipToGridBtn" class="skip-to-grid button-30" type="button">
+    Skip to Grid
+    </button>    
+
+    <div class="story-header">
+        <h1 class="story-title">The Garden of Forking Paths</h1>
+    </div>
+
+    <!-- Reconstruction Grid -->
+    <div class="reconstruction-grid" id="reconstructionGrid">
+        <div class="grid-cell" data-position="0"><p>1</p></div>
+        <div class="grid-cell" data-position="1"><p>2</p></div>
+        <div class="grid-cell" data-position="2"><p>3</p></div>
+        <div class="grid-cell" data-position="3"><p>4</p></div>
+        <div class="grid-cell" data-position="4"><p>5</p></div>
+        <div class="grid-cell" data-position="5"><p>6</p></div>
+        <div class="grid-cell" data-position="6"><p>7</p></div>
+        <div class="grid-cell" data-position="7"><p>8</p></div>
+        <div class="grid-cell" data-position="8"><p>9</p></div>
+        <div class="grid-cell" data-position="9"><p>10</p></div>
+        <div class="grid-cell" data-position="10"><p>11</p></div>
+        <div class="grid-cell" data-position="11"><p>12</p></div>
+    </div>
+
+    <div class="cards-container" id="cardsContainer"></div>
+    
+    <div class="card-overlay" id="cardOverlay">
+        <div id="expandedCard" class="expanded-card">
+            
+        <button id="nextCard" class="nav-arrow nav-left button-30" aria-label="Next">
+            <span class="arrow" aria-hidden="true">
+                <span class="arrow-top"></span>
+                <span class="arrow-bottom"></span>
+            </span>
+        </button>
+        <button id="prevCard" class="nav-arrow nav-right button-30" aria-label="Previous">
+            <span class="arrow" aria-hidden="true">
+                <span class="arrow-top"></span>
+                <span class="arrow-bottom"></span>
+            </span>
+        </button>
+
+        <div class="card-front"></div>
+        <div class="card-back">
+            <div id="cardContent" class="card-content"></div>
+        </div>
+
+        <button id="closeCard" class="close-card button-30" aria-label="Close card">
+            <span class="close-line close-line-a" aria-hidden="true"></span>
+            <span class="close-line close-line-b" aria-hidden="true"></span>
+            Close
+        </button>
+        </div>
+    </div>
+    <div id="gridInstructionOverlay" class="grid-instruction-overlay hidden">
+    <div class="grid-instruction-box">
+        <div id="gridInstructionTyped" class="grid-instruction-typed">
+        <span id="gridInstructionText"></span><span id="gridInstructionCaret" class="grid-instruction-caret">|</span>
+        <div id="gridStoryLinks" class="hidden">
+        <div id="nextStory" class="story-link"></div>
+        <div id="restartStory" class="story-link"></div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="cards.js"></script>
+    <script>
+        initializeDeck('diamonds');
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Borges Stories</title>
+    <link rel="stylesheet" href="styles.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=IM+Fell+English:ital@0;1&family=Special+Elite&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<body class="landing-body">
+    <main class="landing-stage" aria-label="Story selection">
+        <div class="landing-terminal">
+        <p class="landing-typed">
+            <span id="typedText"></span><span class="landing-caret" id="caret"></span>
+        </p>
+      <button class="skip-typing button-30" id="skipTyping" type="button">Skip</button>  
+        </div>
+
+        <section class="landing-choices" id="choices" aria-label="Question options">
+            <h2 class="landing-question" id="question"></h2>
+
+            <div class="landing-options" role="list">
+                <a class="landing-option" role="listitem" href="hearts.html" data-suit="hearts">
+                    <span class="option-lead">A.</span>
+                    <span class="option-text">That everything repeats.</span>
+                </a>
+
+                <a class="landing-option" role="listitem" href="spades.html" data-suit="spades">
+                    <span class="option-lead">B.</span>
+                    <span class="option-text">That creation precedes the creator.</span>
+                </a>
+
+                <a class="landing-option" role="listitem" href="diamonds.html" data-suit="diamonds">
+                    <span class="option-lead">C.</span>
+                    <span class="option-text">That all possibilities exist.</span>
+                </a>
+            </div>
+
+            <p class="landing-hint">Choose one.</p>
+        </section>
+    </main>
+
+<script>
+  const introParagraph =
+`Not all stories move forward.
+Some repeat themselves endlessly,
+some invent their own origins,
+and some unfold in every possible direction at once.
+
+What you are about to read does not begin on the first page.
+It begins with an assumption about how time, meaning,
+and causality are arranged.
+
+Before you enter, answer one question.`;
+
+  const questionText = "What do you believe?";
+
+  const typedEl = document.getElementById("typedText");
+  const caretEl = document.getElementById("caret");
+  const choicesEl = document.getElementById("choices");
+  const questionEl = document.getElementById("question");
+  const skipBtn = document.getElementById("skipTyping");
+
+  // Start hidden
+  choicesEl.classList.remove("show");
+
+  // Skip control
+  let skipRequested = false;
+  let activeTypeTimeout = null;
+
+  let skipResolve = null;
+  const skipPromise = new Promise((resolve) => (skipResolve = resolve));
+
+  function finishToEnd() {
+    // Stop any pending typing tick
+    if (activeTypeTimeout) {
+      clearTimeout(activeTypeTimeout);
+      activeTypeTimeout = null;
+    }
+
+    typedEl.textContent = introParagraph;
+
+    // Show end state
+    questionEl.textContent = questionText;
+    choicesEl.classList.add("show");
+
+    // Caret back to normal blink (optional)
+    caretEl.classList.remove("pause");
+
+    // Hide skip button once used
+    if (skipBtn) skipBtn.classList.add("hidden");
+  }
+
+  if (skipBtn) {
+    skipBtn.addEventListener("click", () => {
+      if (skipRequested) return;
+      skipRequested = true;
+      if (skipResolve) skipResolve();
+      finishToEnd();
+    });
+  }
+
+  // Cancelable sleep: returns early if skip is clicked
+  function sleep(ms) {
+    return Promise.race([
+      new Promise((r) => setTimeout(r, ms)),
+      skipPromise
+    ]);
+  }
+
+  function typeText(text, speed = 40) {
+    return new Promise((resolve) => {
+      let i = 0;
+      typedEl.textContent = "";
+
+      function tick() {
+        if (skipRequested) {
+          resolve();
+          return;
+        }
+
+        typedEl.textContent += text.charAt(i);
+        i++;
+
+        if (i < text.length) {
+          activeTypeTimeout = setTimeout(tick, speed);
+        } else {
+          activeTypeTimeout = null;
+          resolve();
+        }
+      }
+
+      tick();
+    });
+  }
+
+  async function run() {
+    await sleep(2000);
+    if (skipRequested) return;
+
+    await typeText(introParagraph, 40);
+    if (skipRequested) return;
+
+    await sleep(450);
+    if (skipRequested) return;
+
+    caretEl.classList.add("pause");
+
+    questionEl.textContent = questionText;
+    choicesEl.classList.add("show");
+
+    await sleep(250);
+    if (skipRequested) return;
+
+    caretEl.classList.remove("pause");
+
+    // Hide skip once typing completed normally
+    if (skipBtn) skipBtn.classList.add("hidden");
+  }
+
+  run();
+
+  // Keyboard shortcuts A/B/C (unchanged)
+  window.addEventListener("keydown", (e) => {
+    const key = e.key.toLowerCase();
+
+    // Let "Enter" also skip (nice UX)
+    if (key === "enter" && !choicesEl.classList.contains("show")) {
+      if (!skipRequested) {
+        skipRequested = true;
+        if (skipResolve) skipResolve();
+        finishToEnd();
+      }
+      return;
+    }
+
+    if (!choicesEl.classList.contains("show")) return;
+
+    if (key === "a") window.location.href = "hearts.html";
+    if (key === "b") window.location.href = "spades.html";
+    if (key === "c") window.location.href = "diamonds.html";
+  });
+</script>
